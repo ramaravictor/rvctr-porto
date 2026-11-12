@@ -1,20 +1,19 @@
-import { EnhancedNavigation } from "../components/layout/EnhancedNavigation";
-import { HeroSection } from "../components/sections/HeroSection";
-import { ComingSoonSection } from "../components/sections/ComingSoonSection";
-import { ProjectsSection } from "../components/sections/ProjectsSection";
-import { ContactSection } from "../components/sections/ContactSection";
-import { Footer } from "../components/layout/Footer";
-import { Navigation } from "@/components/layout/Navigation";
+import { Hero } from "@/components/sections/Hero";
+import { PortfolioShowcase } from "@/components/sections/PortfolioShowcase";
+import { Experience } from "@/components/sections/Experience";
+import { Services } from "@/components/sections/Services";
+import { ClientBlur } from "@/components/sections/ClientBlur";
+import { FAQ } from "@/components/sections/FAQ";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navigation />
-      <HeroSection />
-      <ComingSoonSection />
-      <ProjectsSection />
-      <ContactSection />
-      <Footer />
-    </div>
+    <main id="main" className="overflow-x-clip bg-[#070707]">
+      <Hero />
+      <PortfolioShowcase />
+      <Experience />
+      <Services />
+      <ClientBlur />
+      <FAQ />
+    </main>
   );
 }
