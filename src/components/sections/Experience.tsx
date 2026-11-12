@@ -114,13 +114,11 @@ export function Experience() {
               as="h2"
               className="font-sans text-[5.5vw] font-normal leading-[1.15] tracking-tight max-[1025px]:text-[7vw] max-md:text-[9vw]"
             >
-              Experience &amp;<br />
-              Background
+              Stories
             </RevealText>
             <FadeIn className="w-[34%] max-[1025px]:w-full">
               <p className="text-[1.15vw] leading-relaxed text-white/70 max-[1025px]:text-[2.5vw] max-md:text-[4.2vw]">
-                Software developer with a Master of Information Technology from UGM and 2+ years of
-                professional experience, building web, mobile and AI products for businesses and institutions.
+                A few chapters from how I got here: the jobs, the classrooms, and what I picked up along the way.
               </p>
             </FadeIn>
           </div>
@@ -141,17 +139,15 @@ export function Experience() {
                         }}
                         className="group relative cursor-default py-8 max-md:py-6"
                       >
-                        <h3 className="w-[55%] font-sans text-[1.8vw] font-normal transition-colors group-hover:text-brand max-[1025px]:w-full max-[1025px]:text-[3.4vw] max-md:text-[5.5vw]">
+                        <p className="text-[0.95vw] uppercase tracking-[0.12em] text-white/45 max-[1025px]:text-[2vw] max-md:text-[3.2vw]">
+                          {item.meta}
+                        </p>
+                        <h3 className="mt-2 w-[55%] font-sans text-[1.9vw] font-normal leading-[1.2] transition-colors group-hover:text-brand max-[1025px]:w-full max-[1025px]:text-[3.6vw] max-md:text-[5.6vw]">
                           {item.title}
                         </h3>
-                        <p className="mt-2 text-[1.25vw] tracking-wide text-white/40 max-[1025px]:text-[2.2vw] max-md:text-[3.6vw]">
-                          {item.subtitle.toUpperCase()}
+                        <p className="mt-3 w-[50%] text-[1.1vw] leading-relaxed text-white/65 max-[1025px]:w-full max-[1025px]:text-[2.2vw] max-md:text-[3.8vw]">
+                          {item.story}
                         </p>
-                        {item.detail && (
-                          <p className="mt-1 text-[1vw] text-white/60 max-[1025px]:text-[2vw] max-md:text-[3.4vw]">
-                            {item.detail}
-                          </p>
-                        )}
                       </div>
                       <div
                         ref={(el) => {
@@ -187,14 +183,17 @@ export function Experience() {
                 <img src={item.image} alt="" className="size-full object-cover object-top" />
               ) : (
                 <div className="flex size-full flex-col justify-between bg-gradient-to-br from-[#083928] to-[#042722] p-[2vw]">
-                  <span className="text-[0.9vw] uppercase tracking-[0.14em] text-white/55">
-                    {item.subtitle.split(" · ")[0]}
+                  <span className="self-start rounded-full bg-white/10 px-[0.9vw] py-[0.3vw] text-[0.85vw] uppercase tracking-[0.14em] text-white/80">
+                    {item.badge}
                   </span>
-                  <span className="font-sans text-[2.2vw] leading-[1.1] text-white">
-                    {item.title.split(" — ")[1] ?? item.title}
-                  </span>
-                  <span className="text-[1vw] text-white/70">{item.title.split(" — ")[0]}</span>
+                  <span className="font-sans text-[2.2vw] leading-[1.1] text-white">{item.org}</span>
+                  <span className="text-[0.95vw] uppercase tracking-[0.12em] text-white/60">{item.meta}</span>
                 </div>
+              )}
+              {item.image && (
+                <span className="absolute left-[1.2vw] top-[1.2vw] rounded-full bg-black/55 px-[0.9vw] py-[0.3vw] text-[0.85vw] uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+                  {item.badge}
+                </span>
               )}
             </div>
           ))}
