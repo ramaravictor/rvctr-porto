@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# rvctr-porto
 
-## Getting Started
+Personal portfolio of Rama Soni Ravictor, Software Engineer in Jakarta.
 
-First, run the development server:
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 3 · GSAP + ScrollTrigger · Lenis
+
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000 (use -p 3001 if 3000 is taken)
+npm run build    # don't run while `next dev` is running: both write to .next/
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/                  routes: home, /work/[slug] detail pages, page transition (template.tsx)
+  components/
+    layout/             Header, Footer
+    sections/           home page sections, in page order (see app/page.tsx)
+    ui/                 small reusable pieces: RevealText, FadeIn, Reveal, PluckString, Cursor, ArrowIcon
+    providers/          SmoothScroll (Lenis synced with ScrollTrigger)
+  data/                 all site content: projects, background, services, tech stack, FAQ, navigation
+  hooks/                useMediaQuery, useFinePointer
+  lib/                  gsap setup, lenis store, site config, helpers
+  types/                shared types
+public/images/          web-sized images only
+  work/<project>/       detail-page galleries (01–05.jpg)
+assets-source/          original photos (not in git, not served)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
+| What | Where |
+|---|---|
+| Name, title, location, email | `src/lib/constants.ts` |
+| Social links, nav and footer links | `src/data/navigation.ts` |
+| Projects (order = biggest first), detail pages | `src/data/projects.ts` |
+| Experience / education stories | `src/data/background.ts` |
+| Services, tech stack, FAQ | `src/data/*.ts` |
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A project shows up in the hero, the showcase and the footer once it has an `image`.

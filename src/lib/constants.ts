@@ -6,6 +6,5 @@ export const SITE_CONFIG = {
   description: "Code with purpose. Design with empathy. Deliver with impact.",
   location: "Jakarta, Indonesia",
   timeZone: "Asia/Jakarta",
-  // TODO: ganti dengan email asli Anda
-  email: "hello@example.com",
+  email: "ramasoniravictor@gmail.com",
 } as const;

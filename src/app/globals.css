@@ -12,24 +12,9 @@
     --line: 46 46 44;
     --accent: 45 159 94;
     --night: 7 7 7;
-    --night-fg: 255 255 255;
-    --night-muted: 156 155 148;
-    --night-line: 46 46 44;
     color-scheme: dark;
   }
 
-  .dark {
-    --paper: 7 7 7;
-    --ink: 255 255 255;
-    --muted: 156 155 148;
-    --line: 46 46 44;
-    --accent: 45 159 94;
-    --night: 7 7 7;
-    --night-fg: 255 255 255;
-    --night-muted: 156 155 148;
-    --night-line: 46 46 44;
-    color-scheme: dark;
-  }
 
   /* No `scroll-behavior: smooth` here: Lenis handles smooth scrolling. */
   html {
@@ -52,64 +37,6 @@
   :focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-paper;
   }
-}
-
-/* Hero portrait: diagonal wipe driven by --reveal (Hero.tsx) */
-.hero-mask-reveal {
-  -webkit-mask-image: linear-gradient(to top left, black var(--reveal, 125%), transparent calc(var(--reveal, 125%) + 25%));
-  mask-image: linear-gradient(to top left, black var(--reveal, 125%), transparent calc(var(--reveal, 125%) + 25%));
-}
-
-/* Hero portrait: chest-up crop like the reference. The cutout (source: assets-source/RAMA.jpg)
-   is already cropped: head top at ~7% and chest at ~85% of its height, so a
-   118vh-tall image at top 0 puts the head ~8vh down and the chest at the bottom.
-   translateX(10vh) offsets the head (which sits left of the image centre). */
-.hero-portrait-crop {
-  top: 0;
-  height: 118vh;
-  transform: translateX(10vh);
-}
-@media (max-width: 1025px) {
-  .hero-portrait-crop {
-    top: 24vh;
-    height: 88vh;
-    transform: translateX(6vh);
-  }
-}
-@media (max-width: 767px) {
-  .hero-portrait-crop {
-    top: 36vh;
-    height: 71vh;
-    transform: translateX(5vh);
-  }
-}
-
-/* Bottom of the frame fades into the dark background */
-.hero-portrait-frame {
-  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 22%);
-  mask-image: linear-gradient(to top, transparent 0%, black 22%);
-}
-
-/* Shared silhouette clip for the grade/rim layers */
-.hero-portrait-grade,
-.hero-portrait-rim {
-  -webkit-mask: url("/images/rama-hero.png") center / 100% 100% no-repeat;
-  mask: url("/images/rama-hero.png") center / 100% 100% no-repeat;
-  pointer-events: none;
-}
-
-/* Pulls the studio colours toward the site's dark emerald */
-.hero-portrait-grade {
-  background: linear-gradient(180deg, rgb(45 159 94 / 0.55) 0%, rgb(8 57 40 / 0.7) 55%, rgb(2 22 18 / 0.95) 100%);
-  mix-blend-mode: color;
-  opacity: 0.55;
-}
-
-/* Green light falling from the top-right, like the reference's rim light */
-.hero-portrait-rim {
-  background: radial-gradient(70% 55% at 85% 10%, rgb(45 159 94 / 0.9) 0%, rgb(45 159 94 / 0) 70%),
-    linear-gradient(180deg, rgb(0 0 0 / 0) 40%, rgb(2 22 18 / 0.85) 100%);
-  mix-blend-mode: soft-light;
 }
 
 /* Hero intro: hidden until Hero.tsx animates them in */

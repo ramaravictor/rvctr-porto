@@ -52,7 +52,7 @@ export default async function ProjectPage({ params }: Props) {
       <article className="shell pb-24 pt-28 md:pb-40 md:pt-40">
         <Reveal className="label flex items-center justify-between text-muted">
           <Link
-            href="/#work"
+            href="/#portfolio"
             className="group inline-flex items-center gap-2 transition-colors hover:text-ink"
           >
             <ArrowIcon className="-rotate-[135deg] transition-transform duration-500 ease-out-expo group-hover:-translate-x-1" />
@@ -100,12 +100,17 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </Reveal>
 
-        {project.gallery && project.gallery.length > 1 && (
+        {project.gallery && project.gallery.length > 0 && (
           <div className="mt-6 grid gap-6 md:mt-10 md:grid-cols-2">
             {project.gallery
               .filter((g) => g.src !== project.image)
-              .map((g, i) => (
-                <Reveal key={g.src} delay={i * 0.1}>
+              .map((g, i, all) => (
+                <Reveal
+                  key={g.src}
+                  delay={(i % 2) * 0.1}
+                  // An odd last image spans the full width instead of leaving a gap.
+                  className={all.length % 2 === 1 && i === all.length - 1 ? "md:col-span-2" : undefined}
+                >
                   <figure>
                     <div className="relative aspect-[16/10] overflow-hidden bg-line">
                       <Image
@@ -137,12 +142,30 @@ export default async function ProjectPage({ params }: Props) {
             </p>
           </Reveal>
 
+          {project.features && project.features.length > 0 && (
+            <>
+              <Reveal className="col-span-12 md:col-span-3 md:mt-10">
+                <p className="label text-muted">(Key features)</p>
+              </Reveal>
+              <Reveal className="col-span-12 md:col-span-9 md:mt-10 lg:col-span-8" delay={0.1}>
+                <ul className="divide-y divide-line border-y border-line">
+                  {project.features.map((f, i) => (
+                    <li key={f} className="flex gap-6 py-4 text-lg leading-snug md:text-xl">
+                      <span className="label pt-1.5 text-muted">{formatIndex(i)}</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            </>
+          )}
+
           <Reveal className="col-span-12 md:col-span-3 md:mt-10">
             <p className="label text-muted">(Stack)</p>
           </Reveal>
           <Reveal className="col-span-12 md:col-span-9 md:mt-10 lg:col-span-8" delay={0.1}>
             <ul className="flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
+              {(project.stack ?? project.tags).map((tag) => (
                 <li key={tag} className="rounded-full border border-line px-3 py-1.5 text-sm">
                   {tag}
                 </li>

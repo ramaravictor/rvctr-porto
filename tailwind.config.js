@@ -8,7 +8,6 @@ const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -23,20 +22,13 @@ const config = {
         line: token("line"),
         accent: token("accent"),
         brand: "#2D9F5E",
-        // Inverted surface used by the contact section and footer
+        // Page-transition curtain (template.tsx)
         night: token("night"),
-        "night-fg": token("night-fg"),
-        "night-muted": token("night-muted"),
-        "night-line": token("night-line"),
       },
       fontFamily: {
         sans: ["var(--font-jakarta)", ...defaultTheme.fontFamily.sans],
         mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
-      },
-      fontSize: {
-        display: ["clamp(3.5rem, 15.5vw, 15rem)", { lineHeight: "0.82", letterSpacing: "-0.055em" }],
-        huge: ["clamp(2.75rem, 9vw, 9rem)", { lineHeight: "0.9", letterSpacing: "-0.045em" }],
-        statement: ["clamp(1.75rem, 4.2vw, 3.75rem)", { lineHeight: "1.08", letterSpacing: "-0.03em" }],
+        display: ["var(--font-display)", ...defaultTheme.fontFamily.sans],
       },
       transitionTimingFunction: {
         "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",

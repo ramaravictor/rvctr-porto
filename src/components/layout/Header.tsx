@@ -13,8 +13,6 @@ export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>(null);
-  // True while the hero is on screen (home page only): show the full name, hide the centre line.
-  const [inHero, setInHero] = useState(pathname === "/");
   // Slides up out of view while scrolling down, comes back on any scroll up.
   const [hidden, setHidden] = useState(false);
 
@@ -28,8 +26,6 @@ export function Header() {
       else if (delta < -6) setHidden(false);
       if (Math.abs(delta) > 6 || y <= 150) lastY = y;
       setScrolled(y > 150);
-      const hero = pathname === "/" ? document.getElementById("hero") : null;
-      setInHero(!!hero && hero.getBoundingClientRect().bottom > window.innerHeight * 0.4);
       if (pathname !== "/") {
         setActive(pathname.startsWith("/work") ? "portfolio" : null);
         return;
@@ -65,40 +61,20 @@ export function Header() {
         scrolled ? "border-b border-white/10 bg-black/40 backdrop-blur-md" : "border-b border-transparent bg-transparent"
       }`}
     >
-      {/* Left: brand */}
-      {/* Left: brand. Full name in the hero, short name elsewhere (crossfade). */}
+      {/* Left: brand (same on every section) */}
       <Link
         href="/#hero"
         aria-label={SITE_CONFIG.name}
-        className="grid justify-self-start whitespace-nowrap font-sans text-[1.7vw] font-semibold tracking-tight max-[1025px]:text-2xl max-md:text-[17px]"
+        className="justify-self-start whitespace-nowrap font-sans text-[1.7vw] font-semibold tracking-tight max-[1025px]:text-2xl max-md:text-[17px]"
       >
-        <span
-          aria-hidden="true"
-          className={`[grid-area:1/1] transition-all duration-500 ease-out ${
-            inHero ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
-          }`}
-        >
-          {SITE_CONFIG.name}
-          <span className="text-brand">.</span>
-        </span>
-        <span
-          aria-hidden="true"
-          className={`[grid-area:1/1] transition-all duration-500 ease-out ${
-            inHero ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"
-          }`}
-        >
+        <span aria-hidden="true">
           {SITE_CONFIG.shortName}
           <span className="text-brand">.</span>
         </span>
       </Link>
 
-      {/* Centre: role, city (hidden in the hero, which already says it) */}
-      <p
-        aria-hidden={inHero}
-        className={`justify-self-center text-[1.1vw] text-white/75 transition-opacity duration-500 max-[1025px]:text-sm max-md:hidden ${
-          inHero ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-      >
+      {/* Centre: role, city */}
+      <p className="justify-self-center text-[1.1vw] text-white/75 max-[1025px]:text-sm max-md:hidden">
         {SITE_CONFIG.title}, {city}
       </p>
 

@@ -1,5 +1,5 @@
 import { SITE_CONFIG } from "@/lib/constants";
-import { projectsData } from "@/data/projects";
+import { SHOWCASE_PROJECTS } from "@/data/projects";
 
 // Right-hand links; `section` is the element id whose visibility marks the link active.
 export const NAV_LINKS = [
@@ -8,7 +8,13 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/#footer", section: "footer" },
 ] as const;
 
-export const CONTACT_EMAIL = SITE_CONFIG.email || "hello@example.com";
+export const CONTACT_EMAIL = SITE_CONFIG.email;
+
+export const SOCIAL_LINKS = {
+  instagram: "https://www.instagram.com/ramarvctr_/",
+  linkedin: "https://www.linkedin.com/in/ramasoniravictor/",
+  github: "https://github.com/ramaravictor",
+} as const;
 
 export const FOOTER_COLUMNS: { title: string; links: { label: string; href: string; external?: boolean }[] }[] = [
   {
@@ -22,18 +28,14 @@ export const FOOTER_COLUMNS: { title: string; links: { label: string; href: stri
   },
   {
     title: "Projects",
-    links: projectsData
-      .filter((p) => p.image?.startsWith("/images/work/"))
-      .slice(0, 4)
-      .map((p) => ({ label: p.title.split(" — ")[0], href: `/work/${p.id}` })),
+    links: SHOWCASE_PROJECTS.slice(0, 4).map((p) => ({ label: p.title, href: `/work/${p.id}` })),
   },
   {
-    // TODO: replace "#" with the real profile URLs.
     title: "Follow",
     links: [
-      { label: "LinkedIn", href: "#", external: true },
-      { label: "GitHub", href: "#", external: true },
-      { label: "Instagram", href: "#", external: true },
+      { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, external: true },
+      { label: "GitHub", href: SOCIAL_LINKS.github, external: true },
+      { label: "Instagram", href: SOCIAL_LINKS.instagram, external: true },
       { label: "Email", href: `mailto:${CONTACT_EMAIL}` },
     ],
   },

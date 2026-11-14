@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import { useMediaQuery, COMPACT_QUERY } from "@/hooks/useMediaQuery";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { RevealText } from "@/components/ui/RevealText";
@@ -126,10 +126,10 @@ export function Services() {
               <div className="relative flex justify-end">
                 <div className="relative flex size-[3.2vw] items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 duration-300 ease-out group-hover:bg-white group-hover:text-black max-[1025px]:size-[7vw] max-md:size-[9vw]">
                   <div className="duration-300 ease-out group-hover:-translate-y-[150%] group-hover:translate-x-[150%]">
-                    <ArrowUpRight size={20} />
+                    <ArrowIcon className="text-[20px]" />
                   </div>
                   <div className="absolute -translate-x-[150%] translate-y-[150%] duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0">
-                    <ArrowUpRight size={20} />
+                    <ArrowIcon className="text-[20px]" />
                   </div>
                 </div>
               </div>

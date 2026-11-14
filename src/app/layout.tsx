@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { JetBrains_Mono, Oswald, Plus_Jakarta_Sans } from "next/font/google";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -20,13 +20,18 @@ const mono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+// Condensed display face for the hero name.
+const display = Oswald({
+  subsets: ["latin"],
+  weight: ["500"],
+  display: "swap",
+  variable: "--font-display",
+});
+
 export const metadata: Metadata = {
   title: `${SITE_CONFIG.name} — ${SITE_CONFIG.title}`,
   description: SITE_CONFIG.description,
 };
-
-// Runs before paint so the saved / system theme applies without a flash.
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
 
 // Hides the header and hero text before paint on a fresh home page load, so the
 // hero intro can bring them in (see Hero.tsx). Skipped for reduced motion and #hash links.
@@ -40,11 +45,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} ${mono.variable}`}
+      className={`${jakarta.variable} ${mono.variable} ${display.variable}`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body>

@@ -5,9 +5,23 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { lenisStore } from "@/lib/lenis";
 import { RevealText } from "@/components/ui/RevealText";
+import { SHOWCASE_PROJECTS } from "@/data/projects";
+import { TECH_STACK } from "@/data/tech-stack";
+import { CONTACT_EMAIL } from "@/data/navigation";
 
-const COL_1 = ["lisa-home-stay", "tembi", "tanikasir", "pandawa-ai"];
-const COL_2 = ["undang-in", "tanikasir-storefront", "lisa-home-stay", "tembi"];
+// Stage layout after the Nino template hero: a giant condensed name, a tilted
+// portrait card in front of it, a short column on each side, and a dark bar
+// with the tech stack. On scroll the stage shrinks and reveals a marquee of
+// project screenshots behind it.
+
+const THUMBS = SHOWCASE_PROJECTS.slice(0, 3);
+const LOGOS = TECH_STACK.filter((t, i, all) => all.findIndex((x) => x.logo === t.logo) === i);
+const CARD_TILT = -4;
+
+// Background marquee: the two columns alternate through the project covers.
+const COVERS = SHOWCASE_PROJECTS.map((p) => p.image);
+const COL_1 = COVERS.filter((_, i) => i % 2 === 0);
+const COL_2 = COVERS.filter((_, i) => i % 2 === 1);
 
 /**
  * A column of project screenshots that drifts upward on its own, forever.
@@ -20,10 +34,10 @@ function MarqueeColumn({ images, duration }: { images: string[]; duration: strin
       className="flex flex-col animate-marquee-up will-change-transform motion-reduce:animate-none"
       style={{ animationDuration: duration }}
     >
-      {[...images, ...images].map((name, i) => (
+      {[...images, ...images].map((src, i) => (
         <div key={i} className="w-full pb-[2.5vw]">
           <div className="h-[27vw] w-full overflow-hidden">
-            <img src={`/images/work/${name}.jpg`} alt="" className="object-cover object-top size-full" />
+            <img src={src} alt="" className="size-full object-cover object-top" />
           </div>
         </div>
       ))}
@@ -34,17 +48,15 @@ function MarqueeColumn({ images, duration }: { images: string[]; duration: strin
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const badgesRef = useRef<HTMLDivElement>(null);
-  const avatarRef = useRef<HTMLDivElement>(null);
-  const avatarImgRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const sidesRef = useRef<(HTMLDivElement | null)[]>([]);
   const bgRef = useRef<HTMLDivElement>(null);
   const col1Ref = useRef<HTMLDivElement>(null);
   const col2Ref = useRef<HTMLDivElement>(null);
   const [titleOn, setTitleOn] = useState(false);
 
-  // Intro on a fresh home page load: scroll locked, title rises in letter by
-  // letter, badges follow, then the header drops in and scrolling unlocks.
+  // Intro on a fresh home page load: scroll locked, name rises letter by
+  // letter, the card swings up into place, the side columns and header follow.
   useEffect(() => {
     const root = document.documentElement;
     if (!root.classList.contains("intro")) {
@@ -54,9 +66,11 @@ export function Hero() {
 
     let tl: gsap.core.Timeline | null = null;
     const header = document.getElementById("header");
+    const sides = sidesRef.current.filter(Boolean);
+    const card = cardRef.current;
 
-    // Deferred a frame so React strict mode's mount/unmount/mount in dev
-    // cancels the first run instead of eating the intro.
+    // Deferred a frame so React strict mode's double mount in dev cancels the
+    // first run instead of eating the intro.
     const raf = requestAnimationFrame(() => {
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       window.scrollTo(0, 0);
@@ -64,17 +78,16 @@ export function Hero() {
       lenisStore.current?.stop();
 
       gsap.set(header, { yPercent: -50, opacity: 0 });
-      gsap.set(badgesRef.current, { opacity: 0, y: 20 });
-      gsap.set(avatarRef.current, { opacity: 0, "--reveal": "-40%" });
+      gsap.set(sides, { opacity: 0, y: 30 });
+      gsap.set(cardRef.current, { opacity: 0, y: 160, rotate: CARD_TILT - 10 });
       root.classList.remove("intro");
 
       tl = gsap
         .timeline()
-        // Portrait wipes in diagonally over 3.5s while fading up, as in the reference.
-        .to(avatarRef.current, { "--reveal": "125%", duration: 3.5, ease: "power2.out" }, 0)
-        .to(avatarRef.current, { opacity: 1, duration: 1.5, ease: "power2.out" }, 0)
-        .call(() => setTitleOn(true), undefined, 1.0)
-        .to(badgesRef.current, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 1.5)
+        .call(() => setTitleOn(true), undefined, 0)
+        .to(cardRef.current, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.35)
+        .to(cardRef.current, { y: 0, rotate: CARD_TILT, duration: 1.5, ease: "expo.out" }, 0.35)
+        .to(sides, { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "power3.out" }, 0.9)
         .to(
           header,
           {
@@ -87,7 +100,7 @@ export function Hero() {
               lenisStore.current?.start();
             },
           },
-          1.8
+          1.2
         );
     });
 
@@ -95,8 +108,8 @@ export function Hero() {
       cancelAnimationFrame(raf);
       if (!tl) return;
       tl.kill();
-      gsap.set([header, badgesRef.current], { clearProps: "transform,opacity" });
-      gsap.set(avatarRef.current, { opacity: 1, "--reveal": "125%" });
+      gsap.set([header, ...sides], { clearProps: "transform,opacity" });
+      gsap.set(card, { opacity: 1, y: 0, rotate: CARD_TILT });
       root.classList.remove("intro");
       lenisStore.current?.start();
       setTitleOn(true);
@@ -130,120 +143,128 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  // Mouse parallax (desktop only): portrait ±30px, text ±12px, lerp 0.08.
-  useEffect(() => {
-    if (window.innerWidth <= 1024 || prefersReducedMotion()) return;
-    const s = { nx: 0, ny: 0, x: 0, y: 0 };
-    const onMove = (e: MouseEvent) => {
-      s.nx = (e.clientX / window.innerWidth) * 2 - 1;
-      s.ny = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    let raf = 0;
-    const tick = () => {
-      s.x += (s.nx - s.x) * 0.08;
-      s.y += (s.ny - s.y) * 0.08;
-      gsap.set(textRef.current, { x: -12 * s.x, y: -12 * s.y });
-      gsap.set(avatarImgRef.current, { x: -30 * s.x, y: -30 * s.y });
-      raf = requestAnimationFrame(tick);
-    };
-    window.addEventListener("mousemove", onMove);
-    raf = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <section ref={sectionRef} id="hero" className="relative h-[300vh] w-screen">
-      {/* Sticky Hero Stage */}
+    <section ref={sectionRef} id="hero" className="relative h-[300vh] w-screen text-white">
+      {/* Sticky hero stage */}
       <div
         ref={stageRef}
-        className="sticky top-0 z-10 flex h-screen w-screen items-center justify-between overflow-hidden px-[4vw] will-change-transform max-[1025px]:items-start max-[1025px]:px-[5vw] max-[1025px]:pt-[30vw]"
-        style={{
-          backgroundColor: "rgb(2, 22, 18)",
-          backgroundImage: `
-            radial-gradient(65% 55% at 92% 6%, rgb(8, 57, 40) 0%, rgba(8, 57, 40, 0) 65%),
-            radial-gradient(60% 55% at 4% 82%, rgb(9, 60, 42) 0%, rgba(9, 60, 42, 0) 65%),
-            radial-gradient(75% 80% at 48% 42%, rgb(4, 39, 34) 0%, rgba(4, 39, 34, 0) 70%),
-            linear-gradient(rgb(8, 57, 40) 0%, rgb(6, 47, 35) 28%, rgb(4, 39, 34) 46%, rgb(3, 28, 24) 68%, rgb(3, 25, 21) 88%, rgb(2, 22, 18) 100%)
-          `,
-        }}
+        className="sticky top-0 z-10 flex h-screen w-screen flex-col overflow-hidden will-change-transform"
       >
+        {/* Upper area */}
         <div
-          ref={textRef}
-          className="hero-intro relative z-20 flex w-full justify-between max-[1025px]:flex-col max-[1025px]:gap-8"
+          className="relative flex-1 px-[5vw] pt-[8vw] max-[1025px]:pt-32"
+          style={{
+            backgroundColor: "rgb(4, 39, 34)",
+            backgroundImage:
+              "radial-gradient(60% 70% at 50% 40%, rgb(9, 60, 42) 0%, rgba(9,60,42,0) 70%), linear-gradient(rgb(8, 57, 40) 0%, rgb(4, 39, 34) 60%, rgb(3, 28, 24) 100%)",
+          }}
         >
-          <div className="w-[50%] max-[1025px]:w-[70%] max-md:w-full">
-            <RevealText
-              as="h1"
-              play={titleOn}
-              className="select-none font-sans text-[7.5vw] font-normal leading-[1.05] tracking-tight text-white max-[1025px]:text-[12vw] max-md:text-[15vw]"
-            >
-              Turning<br />
-              Ideas into<br />
-              Products
-            </RevealText>
-          </div>
-
-          <div
-            ref={badgesRef}
-            className="flex w-[18%] flex-col justify-between py-[2vw] text-end text-[1.25vw] leading-[1.2] max-[1025px]:w-[45%] max-[1025px]:flex-col-reverse max-[1025px]:gap-16 max-[1025px]:text-start max-[1025px]:text-[3.5vw] max-md:gap-[7vw] max-md:py-0 max-md:text-[4.5vw]"
+          <RevealText
+            as="h1"
+            play={titleOn}
+            className="hero-intro select-none whitespace-nowrap text-center font-display text-[8.8vw] font-medium uppercase leading-[1.2] text-white max-[1025px]:whitespace-normal max-[1025px]:text-[15vw] max-[1025px]:leading-[1] max-md:text-[19vw]"
           >
-            <div>
-              <p className="text-white/90">
-                Web, Mobile<br />
-                &amp; AI Engineering
+            Rama Soni Ravictor
+          </RevealText>
+
+          <div className="relative mt-[2vw] flex items-start justify-between max-[1025px]:mt-10 max-[1025px]:flex-col max-[1025px]:items-center max-[1025px]:gap-10">
+            {/* Left: real projects in place of the template's reviews */}
+            <div
+              ref={(el) => {
+                sidesRef.current[0] = el;
+              }}
+              className="hero-intro w-[21vw] pt-[2vw] max-[1025px]:w-full max-[1025px]:pt-0 max-[1025px]:text-center"
+            >
+              <div className="flex max-[1025px]:justify-center">
+                {THUMBS.map((p, i) => (
+                  <img
+                    key={p.id}
+                    src={p.image}
+                    alt=""
+                    className="size-[4.2vw] rounded-full border-2 border-[#042722] object-cover object-top max-[1025px]:size-14"
+                    style={{ marginLeft: i ? "-1.1vw" : 0 }}
+                  />
+                ))}
+              </div>
+              <p className="mt-[1.4vw] text-[1.4vw] font-medium max-[1025px]:mt-4 max-[1025px]:text-xl">
+                {SHOWCASE_PROJECTS.length} projects <span className="text-white/45">(web, mobile &amp; AI)</span>
+              </p>
+              <p className="mt-[0.6vw] text-[1.1vw] leading-relaxed text-white/70 max-[1025px]:mt-2 max-[1025px]:text-base">
+                From booking sites to AI assistants.{" "}
+                <a href="#portfolio" className="text-brand underline-offset-4 hover:underline">
+                  See the work
+                </a>
               </p>
             </div>
-            <div className="mt-8">
-              <p className="text-white/90">
-                {SITE_CONFIG.title}<br />
-                {SITE_CONFIG.location}
+
+            {/* Right: intro + CTA (desktop; the header's Contact link covers mobile) */}
+            <div
+              ref={(el) => {
+                sidesRef.current[1] = el;
+              }}
+              className="hero-intro w-[21vw] pt-[2vw] max-[1025px]:hidden"
+            >
+              <p className="text-[1.1vw] leading-relaxed text-white/80">
+                Hi, I&apos;m Rama, a {SITE_CONFIG.title.toLowerCase()} in {SITE_CONFIG.location.split(",")[0]} turning
+                ideas into web, mobile and AI products.
               </p>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="mt-[1.6vw] inline-flex items-center gap-3 rounded-md bg-white px-[1.8vw] py-[0.9vw] text-[1vw] font-medium text-[#070707] transition-colors hover:bg-brand"
+              >
+                Let&apos;s connect
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+
+            {/* Centre: tilted portrait card, overlapping the bar below */}
+            {/* Hover straightens the tilted card */}
+            <div
+              onMouseEnter={() => gsap.to(cardRef.current, { rotate: 0, duration: 0.6, ease: "back.out(1.6)" })}
+              onMouseLeave={() => gsap.to(cardRef.current, { rotate: CARD_TILT, duration: 0.6, ease: "back.out(1.6)" })}
+              className="absolute left-1/2 top-[-4vw] z-20 w-[30vw] -translate-x-1/2 max-[1025px]:relative max-[1025px]:left-auto max-[1025px]:top-auto max-[1025px]:w-[66vw] max-[1025px]:translate-x-0 max-md:w-[76vw]"
+            >
+              <div
+                ref={cardRef}
+                className="hero-intro relative aspect-[3/4] overflow-hidden rounded-[1.4vw] border-[0.35vw] border-white/90 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] max-[1025px]:rounded-2xl max-[1025px]:border-4"
+                style={{ transform: `rotate(${CARD_TILT}deg)` }}
+              >
+                {/* Full, uncropped IMG_7516_ai.jpg (3:4), resized for the web; original in assets-source/ */}
+                <img
+                  src="/images/rama-card.jpg"
+                  alt={SITE_CONFIG.name}
+                  draggable={false}
+                  fetchPriority="high"
+                  className="absolute inset-0 size-full origin-[53%_30%] scale-[1.15] select-none object-cover object-top"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Backlight glow behind the portrait */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-[12%] z-[5] h-[75vh] w-[60vh] -translate-x-1/2 rounded-full blur-3xl max-[1025px]:top-auto max-[1025px]:bottom-0 max-[1025px]:h-[55vh] max-[1025px]:w-[45vh]"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(45,159,94,0.55) 0%, rgba(8,57,40,0.35) 55%, rgba(8,57,40,0) 100%)",
-          }}
-        />
-
-        {/* Portrait in front of the title, with diagonal mask reveal */}
-        <div
-          ref={avatarRef}
-          className="hero-intro hero-mask-reveal pointer-events-none absolute inset-0 z-30"
-          style={{ "--reveal": "125%" } as React.CSSProperties}
-        >
-          {/* Viewport-sized frame: crops to chest-up and fades the bottom edge */}
-          <div className="hero-portrait-frame absolute inset-0 overflow-hidden">
-            {/* Scaled so the head sits ~8vh from the top and the chest meets the
-                bottom edge; nudged right so the face lands just right of centre. */}
-            <div className="hero-portrait-crop absolute inset-x-0 flex justify-center">
-              <div ref={avatarImgRef} className="relative h-full will-change-transform">
+        {/* Bottom bar: tech stack marquee (desktop) */}
+        <div className="relative h-[16vh] min-h-[120px] shrink-0 bg-[#070707] pt-[2.2vw] max-[1025px]:hidden">
+          <p className="text-center font-display text-[1.1vw] font-medium uppercase tracking-[0.35em] text-white">
+            Tech I work with
+          </p>
+          <div
+            className="mt-[1.6vw] overflow-hidden"
+            style={{
+              maskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+              WebkitMaskImage: "linear-gradient(90deg, transparent, black 12%, black 88%, transparent)",
+            }}
+          >
+            <div className="flex w-max animate-marquee motion-reduce:animate-none">
+              {[...LOGOS, ...LOGOS].map((t, i) => (
                 <div
-                  className="relative h-full"
-                  style={{ transform: "rotate(-2.5deg)", transformOrigin: "50% 100%" }}
+                  key={i}
+                  aria-hidden={i >= LOGOS.length}
+                  className="flex items-center gap-[0.8vw] px-[2.4vw] text-[1.5vw] font-medium text-white/55"
                 >
-                  <img
-                    src="/images/rama-hero.png"
-                    alt={SITE_CONFIG.name}
-                    draggable={false}
-                    fetchPriority="high"
-                    className="block h-full w-auto max-w-none select-none"
-                    style={{ filter: "saturate(0.55) contrast(1.1) brightness(0.9)" }}
-                  />
-                  {/* Colour grade + rim light, clipped to the subject's silhouette */}
-                  <div aria-hidden="true" className="hero-portrait-grade absolute inset-0" />
-                  <div aria-hidden="true" className="hero-portrait-rim absolute inset-0" />
+                  <img src={`/images/tech/${t.logo}.svg`} alt="" className="size-[1.8vw] opacity-55 invert" />
+                  {t.name}
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -256,12 +277,12 @@ export function Hero() {
         style={{ opacity: 0.35, filter: "blur(24px)" }}
       >
         <div className="sticky top-0 flex h-screen w-full gap-[2.5vw] overflow-hidden px-[4vw]">
-          <div ref={col1Ref} className="w-1/2 h-fit will-change-transform">
+          <div ref={col1Ref} className="h-fit w-1/2 will-change-transform">
             <MarqueeColumn images={COL_1} duration="18s" />
           </div>
           <div
             ref={col2Ref}
-            className="w-1/2 h-fit will-change-transform"
+            className="h-fit w-1/2 will-change-transform"
             style={{ transform: "translateY(-160px)" }}
           >
             <MarqueeColumn images={COL_2} duration="42s" />

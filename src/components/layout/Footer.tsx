@@ -58,11 +58,11 @@ export function Footer() {
       }}
     >
       {/* Stars */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         {STARS.map((s, i) => (
           <span
             key={i}
-            className="absolute rounded-full bg-white"
+            className="absolute bg-white rounded-full"
             style={{ left: s.left, top: s.top, width: s.size, height: s.size, opacity: s.opacity }}
           />
         ))}
@@ -85,7 +85,7 @@ export function Footer() {
               className="roll-btn group gap-[0.9vw] bg-white px-[2vw] py-3 text-[1.1vw] font-medium text-[#111111] max-[1025px]:gap-2 max-[1025px]:px-6 max-[1025px]:text-base"
             >
               <span className="relative z-10 size-2 shrink-0 rounded-full bg-[#070707] transition-transform duration-300 group-hover:scale-125" />
-              <RollLabel text="Get in Touch" />
+              <RollLabel text="Let's connect" />
             </a>
             <Link
               href="/#portfolio"
@@ -122,7 +122,7 @@ export function Footer() {
       {/* Giant wordmark */}
       <div ref={wordRef} aria-hidden="true" className="pointer-events-none relative z-0 mt-[4vw] select-none text-center">
         <span
-          className="block font-sans text-[30vw] font-medium leading-[0.8] tracking-[-0.06em]"
+          className="block whitespace-nowrap font-sans text-[25vw] font-medium leading-[0.85] tracking-[-0.06em]"
           style={{
             backgroundImage: "linear-gradient(180deg, rgb(45 159 94 / 0.55) 0%, rgb(45 159 94 / 0.12) 70%, rgb(45 159 94 / 0) 100%)",
             WebkitBackgroundClip: "text",
@@ -131,7 +131,7 @@ export function Footer() {
             textShadow: "0 0 80px rgb(45 159 94 / 0.25)",
           }}
         >
-          Rama.
+          Ravictor.
         </span>
       </div>
 
