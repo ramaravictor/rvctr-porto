@@ -9,11 +9,16 @@ export const projectsData: Project[] = [
     description:
       "A web system built with Spring Boot that runs the whole media workflow, from client brief to performance, in four stages: Discover, Plan, Activity and Measures. AI is built into the flow: it reads and rewrites briefs, helps draft media plans and powers the performance dashboards, all behind company single sign-on.",
     image: "/images/work/pandawa-ai.jpg",
+    gallery: [
+      { src: "/images/work/pandawa-ai/01.jpg", caption: "One flow, four stages: Discover, Plan, Activity, Measures" },
+      { src: "/images/work/pandawa-ai/02.jpg", caption: "Voice assistant: ask Pandawa in any language" },
+    ],
     features: [
       "Four-stage workflow: Discover, Plan, Activity and Measures",
       "AI service that reads, summarises and rewrites client briefs (PDF, Excel, PowerPoint)",
       "Media plan builder backed by its own Spring Boot API",
       "Performance and BI dashboards per client and campaign",
+      "Voice assistant that answers questions about plans, people and workload in any language",
       "Company single sign-on (Okta), notifications and file storage services",
     ],
     stack: ["Java 17", "Spring Boot 3", "Spring Cloud Config", "React 18", "MUI", "Redux Toolkit", "Python", "FastAPI", "OpenAI", "Next.js", "DuckDB", "Google Cloud Storage", "Docker", "Okta SSO"],
