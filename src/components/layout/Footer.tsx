@@ -136,7 +136,7 @@ export function Footer() {
       </div>
 
       {/* Caption + legal */}
-      <div className="relative z-10 -mt-[6vw] flex flex-col items-center gap-2 px-[4vw] pb-8 text-center max-md:-mt-[10vw]">
+      <div className="relative z-10 mt-[5vw] flex flex-col items-center gap-2 px-[4vw] pb-8 text-center max-md:mt-6">
         <p className="text-[1.1vw] text-white/70 max-[1025px]:text-base">Thanks for scrolling. Let&apos;s talk soon.</p>
         <p className="text-xs text-white/40">
           &copy; {new Date().getFullYear()} {SITE_CONFIG.name} · Built with Next.js, Tailwind CSS &amp; GSAP
