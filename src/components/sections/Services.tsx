@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
-import { useMediaQuery, COMPACT_QUERY } from "@/hooks/useMediaQuery";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { RevealText } from "@/components/ui/RevealText";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SERVICES } from "@/data/services";
+import { useCenterActive } from "@/hooks/useCenterActive";
 
 
 const HIDDEN = -40;
@@ -16,15 +16,15 @@ export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   // First card starts lit, as in the reference.
   const reveal = useRef(SERVICES.map((_, i) => ({ value: i === 0 ? SHOWN : HIDDEN })));
   const activeRef = useRef(0);
-  const isGrid = useMediaQuery(COMPACT_QUERY);
 
 
-  // Desktop: the card row slides left as the section scrolls through.
+  // The card row slides left as the section scrolls through, on every screen size.
   useEffect(() => {
-    if (isGrid || prefersReducedMotion()) return;
+    if (prefersReducedMotion()) return;
     const ctx = gsap.context(() => {
       // Cards enter from the right edge as the section scrolls in, then the
       // row keeps sliding left until the last card is in view.
@@ -46,9 +46,9 @@ export function Services() {
       );
     });
     return () => ctx.revert();
-  }, [isGrid]);
+  }, []);
 
-  const tweenFill = (idx: number, value: number, duration: number) => {
+  const tweenFill = useCallback((idx: number, value: number, duration: number) => {
     gsap.to(reveal.current[idx], {
       value,
       duration,
@@ -58,22 +58,28 @@ export function Services() {
         fillRefs.current[idx]?.style.setProperty("--reveal", `${reveal.current[idx].value}%`);
       },
     });
-  };
+  }, []);
 
   // The glow stays on the last hovered card and hands over to the next one.
-  const onEnter = (idx: number) => {
+  const onEnter = useCallback((idx: number) => {
     if (idx === activeRef.current) return;
-    const duration = isGrid || prefersReducedMotion() ? 0 : 0.45;
+    const duration = prefersReducedMotion() ? 0 : 0.45;
     if (activeRef.current !== -1) tweenFill(activeRef.current, HIDDEN, duration);
     tweenFill(idx, SHOWN, duration);
     activeRef.current = idx;
-  };
+  }, [tweenFill]);
+
+  // Touch screens: no hover, so the card nearest the screen centre gets the glow.
+  const touchActive = useCenterActive(cardRefs, "x");
+  useEffect(() => {
+    if (touchActive >= 0) onEnter(touchActive);
+  }, [touchActive, onEnter]);
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className={`services-section relative w-screen bg-[#070707] text-white ${isGrid ? "" : "h-[275vh]"}`}
+      className="services-section relative h-[275vh] w-screen bg-[#070707] text-white"
     >
       <div className="relative w-[60%] px-[4vw] pt-[6vw] max-[1025px]:w-[85%] max-[1025px]:px-[5vw] max-[1025px]:pt-[15vw] max-md:w-full">
         <RevealText
@@ -91,29 +97,20 @@ export function Services() {
       </div>
 
       <div
-        className={
-          isGrid
-            ? "w-screen pb-[6vw]"
-            : "services-sticky sticky top-0 flex h-screen w-screen flex-col justify-center overflow-hidden"
-        }
+        className="services-sticky sticky top-0 flex h-screen w-screen flex-col justify-center overflow-hidden"
       >
         <div
           ref={trackRef}
-          className={
-            isGrid
-              ? "grid grid-cols-2 gap-[2.5vw] px-[5vw] pt-[5vw] max-md:grid-cols-1 max-md:gap-[6vw]"
-              : "services-row flex gap-[1.6vw] px-[4vw] will-change-transform"
-          }
+          className="services-row flex gap-[1.6vw] px-[4vw] will-change-transform max-[1025px]:gap-4 max-[1025px]:px-[5vw]"
         >
           {SERVICES.map((srv, idx) => (
             <div
               key={idx}
+              ref={(el) => {
+                cardRefs.current[idx] = el;
+              }}
               onMouseEnter={() => onEnter(idx)}
-              className={`services-card group relative flex shrink-0 flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[#161616] ${
-                isGrid
-                  ? "min-h-[32vw] p-[3vw] max-md:min-h-[70vw] max-md:p-[5vw]"
-                  : "h-[30vw] w-[27vw] p-[2vw]"
-              }`}
+              className="services-card group relative flex h-[30vw] w-[27vw] shrink-0 flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[#161616] p-[2vw] max-[1025px]:h-[min(62vw,60svh)] max-[1025px]:w-[46vw] max-[1025px]:p-[3vw] max-md:h-[min(105vw,62svh)] max-md:w-[78vw] max-md:p-[5vw]"
             >
               <div
                 ref={(el) => {

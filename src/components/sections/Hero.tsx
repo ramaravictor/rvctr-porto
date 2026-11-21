@@ -22,19 +22,27 @@ const CARD_TILT = -4;
 const COVERS = SHOWCASE_PROJECTS.map((p) => p.image);
 const COL_1 = COVERS.filter((_, i) => i % 2 === 0);
 const COL_2 = COVERS.filter((_, i) => i % 2 === 1);
+// ~12 screenshots per loop half covers a tall phone screen (see MarqueeColumn).
+const MIN_PER_HALF = 12;
 
 /**
  * A column of project screenshots that drifts upward on its own, forever.
  * The list is rendered twice and the track moves by -50%, so the loop is
  * seamless; spacing uses padding (not gap) so both halves are equal height.
  */
-function MarqueeColumn({ images, duration }: { images: string[]; duration: string }) {
+function MarqueeColumn({ images, duration }: { images: string[]; duration: number }) {
+  // One half of the track must be taller than the screen plus the scroll
+  // parallax, or the end of the list shows as empty space. Screenshots are
+  // ~29.5vw tall, so on narrow phones that takes many more of them: repeat the
+  // list until a half holds at least MIN_PER_HALF images.
+  const half = Array.from({ length: Math.ceil(MIN_PER_HALF / images.length) }, () => images).flat();
   return (
     <div
       className="flex flex-col animate-marquee-up will-change-transform motion-reduce:animate-none"
-      style={{ animationDuration: duration }}
+      // Same speed per image as before, however long the track gets.
+      style={{ animationDuration: `${(duration * half.length) / 4}s` }}
     >
-      {[...images, ...images].map((src, i) => (
+      {[...half, ...half].map((src, i) => (
         <div key={i} className="w-full pb-[2.5vw]">
           <div className="h-[27vw] w-full overflow-hidden">
             <img src={src} alt="" className="size-full object-cover object-top" />
@@ -50,6 +58,7 @@ export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const sidesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const tapRef = useRef<gsap.core.Tween | null>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const col1Ref = useRef<HTMLDivElement>(null);
   const col2Ref = useRef<HTMLDivElement>(null);
@@ -138,7 +147,7 @@ export function Hero() {
           0.32
         )
         .fromTo(col1Ref.current, { y: 0 }, { y: -200, ease: "none", duration: 1 }, 0)
-        .fromTo(col2Ref.current, { y: -160 }, { y: 40, ease: "none", duration: 1 }, 0);
+        .fromTo(col2Ref.current, { y: -240 }, { y: -40, ease: "none", duration: 1 }, 0);
     });
     return () => ctx.revert();
   }, []);
@@ -222,6 +231,15 @@ export function Hero() {
             <div
               onMouseEnter={() => gsap.to(cardRef.current, { rotate: 0, duration: 0.6, ease: "back.out(1.6)" })}
               onMouseLeave={() => gsap.to(cardRef.current, { rotate: CARD_TILT, duration: 0.6, ease: "back.out(1.6)" })}
+              // Touch: a tap straightens it, then it tilts back after a moment.
+              onPointerUp={(e) => {
+                if (e.pointerType === "mouse") return;
+                tapRef.current?.kill();
+                gsap.to(cardRef.current, { rotate: 0, duration: 0.6, ease: "back.out(1.6)" });
+                tapRef.current = gsap.delayedCall(1.6, () => {
+                  gsap.to(cardRef.current, { rotate: CARD_TILT, duration: 0.6, ease: "back.out(1.6)" });
+                });
+              }}
               className="absolute left-1/2 top-[-4vw] z-20 w-[30vw] -translate-x-1/2 max-[1025px]:relative max-[1025px]:left-auto max-[1025px]:top-auto max-[1025px]:w-[min(66vw,calc((100svh_-_590px)*0.75))] max-[1025px]:translate-x-0 max-md:w-[min(76vw,calc((100svh_-_400px)*0.75))]"
             >
               <div
@@ -278,14 +296,14 @@ export function Hero() {
       >
         <div className="sticky top-0 flex h-screen w-full gap-[2.5vw] overflow-hidden px-[4vw]">
           <div ref={col1Ref} className="h-fit w-1/2 will-change-transform">
-            <MarqueeColumn images={COL_1} duration="18s" />
+            <MarqueeColumn images={COL_1} duration={18} />
           </div>
           <div
             ref={col2Ref}
             className="h-fit w-1/2 will-change-transform"
-            style={{ transform: "translateY(-160px)" }}
+            style={{ transform: "translateY(-240px)" }}
           >
-            <MarqueeColumn images={COL_2} duration="42s" />
+            <MarqueeColumn images={COL_2} duration={42} />
           </div>
         </div>
       </div>

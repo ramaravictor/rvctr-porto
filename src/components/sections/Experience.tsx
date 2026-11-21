@@ -6,6 +6,8 @@ import { RevealText } from "@/components/ui/RevealText";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { PluckString } from "@/components/ui/PluckString";
 import { BACKGROUND_GROUPS } from "@/data/background";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { TOUCH_QUERY, useCenterActive } from "@/hooks/useCenterActive";
 
 const ITEMS = BACKGROUND_GROUPS.flatMap((g) => g.items);
 
@@ -17,6 +19,9 @@ export function Experience() {
   const activeRef = useRef<number | null>(null);
   const zRef = useRef(ITEMS.length);
   const pointer = useRef<{ x: number; y: number } | null>(null);
+  // Touch screens: no hover, so the row nearest the screen centre stands in for it.
+  const touch = useMediaQuery(TOUCH_QUERY);
+  const touchActive = useCenterActive(rowRefs);
 
   // Initial stack: first preview shown, the rest collapsed.
   useEffect(() => {
@@ -137,17 +142,43 @@ export function Experience() {
                         ref={(el) => {
                           rowRefs.current[i] = el;
                         }}
+                        data-active={i === touchActive || undefined}
                         className="group relative cursor-default py-8 max-md:py-6"
                       >
                         <p className="text-[0.95vw] uppercase tracking-[0.12em] text-white/45 max-[1025px]:text-[2vw] max-md:text-[3.2vw]">
                           {item.meta}
                         </p>
-                        <h3 className="mt-2 w-[55%] font-sans text-[1.9vw] font-normal leading-[1.2] transition-colors group-hover:text-brand max-[1025px]:w-full max-[1025px]:text-[3.6vw] max-md:text-[5.6vw]">
+                        <h3 className="mt-2 w-[55%] font-sans text-[1.9vw] font-normal leading-[1.2] transition-colors group-hover:text-brand group-data-[active]:text-brand max-[1025px]:w-full max-[1025px]:text-[3.6vw] max-md:text-[5.6vw]">
                           {item.title}
                         </h3>
                         <p className="mt-3 w-[50%] text-[1.1vw] leading-relaxed text-white/65 max-[1025px]:w-full max-[1025px]:text-[2.2vw] max-md:text-[3.8vw]">
                           {item.story}
                         </p>
+                        {touch && (
+                          <div
+                            aria-hidden="true"
+                            className={`mt-4 aspect-[16/9] overflow-hidden rounded-xl transition duration-500 ${
+                              i === touchActive ? "opacity-100" : "opacity-40 grayscale"
+                            }`}
+                          >
+                            {item.image ? (
+                              <img
+                                src={item.image}
+                                alt=""
+                                className={`size-full object-cover object-top transition-transform duration-700 ease-out ${
+                                  i === touchActive ? "scale-105" : "scale-100"
+                                }`}
+                              />
+                            ) : (
+                              <div className="flex size-full flex-col justify-between bg-gradient-to-br from-[#083928] to-[#042722] p-5">
+                                <span className="self-start rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.14em] text-white/80">
+                                  {item.badge}
+                                </span>
+                                <span className="text-2xl leading-tight text-white">{item.org}</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                       <div
                         ref={(el) => {

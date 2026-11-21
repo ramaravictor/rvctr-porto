@@ -39,6 +39,18 @@
   }
 }
 
+/* Touch screens can't hover: links and buttons dim while pressed instead */
+@media (hover: none) {
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  a:active,
+  button:active {
+    opacity: 0.6;
+  }
+}
+
 /* Hero intro: hidden until Hero.tsx animates them in */
 html.intro #header,
 html.intro .hero-intro {
