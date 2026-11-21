@@ -53,7 +53,7 @@ export default async function ProjectPage({ params }: Props) {
         <Reveal className="label flex items-center justify-between text-muted">
           <Link
             href="/#portfolio"
-            className="group inline-flex items-center gap-2 transition-colors hover:text-ink"
+            className="group -my-3 inline-flex items-center gap-2 py-3 transition-colors hover:text-ink"
           >
             <ArrowIcon className="-rotate-[135deg] transition-transform duration-500 ease-out-expo group-hover:-translate-x-1" />
             All work

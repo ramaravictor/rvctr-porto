@@ -152,7 +152,7 @@ export function Hero() {
       >
         {/* Upper area */}
         <div
-          className="relative flex-1 px-[5vw] pt-[8vw] max-[1025px]:pt-32"
+          className="relative flex-1 px-[5vw] pt-[8vw] max-[1025px]:pt-32 max-md:pt-[88px]"
           style={{
             backgroundColor: "rgb(4, 39, 34)",
             backgroundImage:
@@ -162,12 +162,12 @@ export function Hero() {
           <RevealText
             as="h1"
             play={titleOn}
-            className="hero-intro select-none whitespace-nowrap text-center font-display text-[8.8vw] font-medium uppercase leading-[1.2] text-white max-[1025px]:whitespace-normal max-[1025px]:text-[15vw] max-[1025px]:leading-[1] max-md:text-[19vw]"
+            className="hero-intro select-none whitespace-nowrap text-center font-display text-[8.8vw] font-medium uppercase leading-[1.2] text-white max-[1025px]:whitespace-normal max-[1025px]:text-[15vw] max-[1025px]:leading-[1] max-md:text-[17vw]"
           >
             Rama Soni Ravictor
           </RevealText>
 
-          <div className="relative mt-[2vw] flex items-start justify-between max-[1025px]:mt-10 max-[1025px]:flex-col max-[1025px]:items-center max-[1025px]:gap-10">
+          <div className="relative mt-[2vw] flex items-start justify-between max-[1025px]:mt-10 max-[1025px]:flex-col max-[1025px]:items-center max-[1025px]:gap-10 max-md:mt-5 max-md:gap-5">
             {/* Left: real projects in place of the template's reviews */}
             <div
               ref={(el) => {
@@ -181,17 +181,17 @@ export function Hero() {
                     key={p.id}
                     src={p.image}
                     alt=""
-                    className="size-[4.2vw] rounded-full border-2 border-[#042722] object-cover object-top max-[1025px]:size-14"
+                    className="size-[4.2vw] rounded-full border-2 border-[#042722] object-cover object-top max-[1025px]:size-14 max-md:size-11"
                     style={{ marginLeft: i ? "-1.1vw" : 0 }}
                   />
                 ))}
               </div>
-              <p className="mt-[1.4vw] text-[1.4vw] font-medium max-[1025px]:mt-4 max-[1025px]:text-xl">
-                {SHOWCASE_PROJECTS.length} projects <span className="text-white/45">(web, mobile &amp; AI)</span>
+              <p className="mt-[1.4vw] text-[1.4vw] font-medium max-[1025px]:mt-4 max-[1025px]:text-xl max-md:mt-3 max-md:text-lg">
+                Selected work <span className="text-white/45">(web, mobile &amp; AI)</span>
               </p>
               <p className="mt-[0.6vw] text-[1.1vw] leading-relaxed text-white/70 max-[1025px]:mt-2 max-[1025px]:text-base">
                 From booking sites to AI assistants.{" "}
-                <a href="#portfolio" className="text-brand underline-offset-4 hover:underline">
+                <a href="#portfolio" className="-my-2 inline-block py-2 text-brand underline-offset-4 hover:underline">
                   See the work
                 </a>
               </p>
@@ -222,7 +222,7 @@ export function Hero() {
             <div
               onMouseEnter={() => gsap.to(cardRef.current, { rotate: 0, duration: 0.6, ease: "back.out(1.6)" })}
               onMouseLeave={() => gsap.to(cardRef.current, { rotate: CARD_TILT, duration: 0.6, ease: "back.out(1.6)" })}
-              className="absolute left-1/2 top-[-4vw] z-20 w-[30vw] -translate-x-1/2 max-[1025px]:relative max-[1025px]:left-auto max-[1025px]:top-auto max-[1025px]:w-[66vw] max-[1025px]:translate-x-0 max-md:w-[76vw]"
+              className="absolute left-1/2 top-[-4vw] z-20 w-[30vw] -translate-x-1/2 max-[1025px]:relative max-[1025px]:left-auto max-[1025px]:top-auto max-[1025px]:w-[min(66vw,calc((100svh_-_590px)*0.75))] max-[1025px]:translate-x-0 max-md:w-[min(76vw,calc((100svh_-_400px)*0.75))]"
             >
               <div
                 ref={cardRef}

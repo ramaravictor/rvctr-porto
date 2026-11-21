@@ -1,24 +1,25 @@
 export type Service = { title: string; tags: string[] };
 
+// Tags come from the stacks used in src/data/projects.ts.
 export const SERVICES: Service[] = [
   {
     title: "Fullstack Web Apps",
-    tags: ["Next.js & React", "TypeScript", "Laravel & PHP", "Tailwind CSS"],
+    tags: ["Next.js & React", "TypeScript", "Laravel & Filament", "Spring Boot"],
   },
   {
     title: "Mobile Engineering",
-    tags: ["React Native", "Cross-Platform iOS/Android", "Face Recognition", "Geolocation APIs"],
+    tags: ["React Native", "iOS & Android apps", "Face Recognition", "Geolocation"],
   },
   {
-    title: "UI/UX & Motion Craft",
-    tags: ["Framer Motion & GSAP", "Design Systems", "Micro-interactions", "High-Fidelity Wireframes"],
+    title: "UI & Motion",
+    tags: ["GSAP & ScrollTrigger", "Lenis smooth scroll", "Tailwind CSS", "Responsive layouts"],
   },
   {
     title: "Backend & Cloud",
-    tags: ["PostgreSQL & MySQL", "REST & GraphQL APIs", "Google Cloud / Docker", "Authentication & SSO"],
+    tags: ["PostgreSQL & MySQL", "REST APIs", "Google Cloud & Docker", "SSO (Okta)"],
   },
   {
-    title: "AI & Modern Workflows",
-    tags: ["Machine Learning APIs", "Computer Vision Integration", "Automated Pipelines", "Performance Budgets"],
+    title: "AI Integration",
+    tags: ["OpenAI & FastAPI", "Brief & document processing", "Voice assistant", "Computer vision"],
   },
 ];

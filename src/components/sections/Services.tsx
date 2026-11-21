@@ -85,7 +85,7 @@ export function Services() {
         </RevealText>
         <FadeIn className="mt-[1.5vw] w-[75%] max-[1025px]:mt-[5vw] max-[1025px]:w-full">
           <p className="text-[1.25vw] leading-relaxed text-white/70 max-[1025px]:text-[2.5vw] max-md:text-[4.5vw]">
-            My practice bridges thoughtful frontend aesthetics with rock-solid fullstack architecture. Whether you need an MVP launched in record time or an enterprise system optimized for scale, I build with clarity and performance.
+            From a one-page store site to a multi-service platform with AI inside, I work across the whole stack: the interface people use, the backend behind it, and the parts that keep it running.
           </p>
         </FadeIn>
       </div>

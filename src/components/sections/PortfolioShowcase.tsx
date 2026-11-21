@@ -167,7 +167,7 @@ export function PortfolioShowcase() {
       />
 
       {/* Sticky Showcase Stage */}
-      <div className="sticky top-0 z-20 flex h-screen w-screen flex-col items-center justify-center gap-[5vw] overflow-hidden bg-gradient-to-r from-[#083928] to-[#042722] px-[4vw] max-[1025px]:gap-12 max-[1025px]:px-[5vw] max-md:gap-[15vw]">
+      <div className="sticky top-0 z-20 flex h-screen w-screen flex-col items-center justify-center gap-[5vw] overflow-hidden bg-gradient-to-r from-[#083928] to-[#042722] px-[4vw] max-[1025px]:gap-12 max-[1025px]:px-[5vw] max-md:gap-[8vw]">
         <RevealText
           as="h2"
           className="text-center font-sans text-[5.5vw] font-normal tracking-tight max-[1025px]:text-[6.5vw] max-md:text-[9vw]"
@@ -175,7 +175,7 @@ export function PortfolioShowcase() {
           Featured Projects &amp; Work
         </RevealText>
 
-        <div className="flex w-full items-center gap-[4vw] max-[1025px]:flex-col max-[1025px]:items-start max-[1025px]:gap-16 max-md:gap-[15vw]">
+        <div className="flex w-full items-center gap-[4vw] max-[1025px]:flex-col max-[1025px]:items-start max-[1025px]:gap-16 max-md:gap-[8vw]">
           {/* Left Timeline & Titles */}
           <div ref={trackRef} className="relative w-[34%] max-[1025px]:w-[50%] max-md:w-full">
             <div className="absolute left-[calc(0.25rem+0.5px)] w-px -translate-x-1/2 bg-white/20" />
@@ -185,18 +185,18 @@ export function PortfolioShowcase() {
               style={{ transform: "scaleY(0)" }}
             />
 
-            <div className="flex flex-col max-[1025px]:gap-[2vw] max-md:gap-[6vw]">
+            <div className="flex flex-col max-[1025px]:gap-[2vw] max-md:gap-0">
               {PROJECTS.map((proj, idx) => (
                 <Link
                   key={proj.id}
                   href={`/work/${proj.id}`}
-                  className="group relative flex h-[5.4vw] cursor-pointer items-center gap-[1.2vw] text-left max-md:gap-[5vw]"
+                  className="group relative flex h-[5.4vw] cursor-pointer items-center gap-[1.2vw] text-left max-md:h-auto max-md:min-h-11 max-md:gap-[5vw]"
                 >
                   <span
                     ref={(el) => {
                       dotRefs.current[idx] = el;
                     }}
-                    className="mt-[-1.5vw] size-2.5 shrink-0 rounded-full border border-white/50 bg-[#073224] max-[1025px]:mt-[-4vw] max-md:mt-[-7vw]"
+                    className="mt-[-1.5vw] size-2.5 shrink-0 rounded-full border border-white/50 bg-[#073224] max-[1025px]:mt-[-4vw] max-md:mt-0"
                   />
                   <span
                     ref={(el) => {
@@ -208,7 +208,7 @@ export function PortfolioShowcase() {
                     <span className="block font-sans text-[1.5vw] font-normal transition-colors duration-300 group-hover:text-black max-[1025px]:text-[3.5vw] max-md:text-[5.5vw]">
                       {proj.title}
                     </span>
-                    <span className="block text-[1vw] text-white/80 max-[1025px]:text-[2.5vw] max-md:text-[4.2vw]">
+                    <span className="block text-[1vw] text-white/80 max-[1025px]:text-[2.5vw] max-md:hidden">
                       {proj.category}
                     </span>
                   </span>
@@ -220,7 +220,7 @@ export function PortfolioShowcase() {
               href={SOCIAL_LINKS.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-[1vw] inline-block pl-[calc(0.625rem+1.2vw)] text-[1.1vw] text-white/60 transition-colors hover:text-white max-[1025px]:mt-6 max-[1025px]:pl-8 max-[1025px]:text-base"
+              className="mt-[1vw] inline-block pl-[calc(0.625rem+1.2vw)] text-[1.1vw] text-white/60 transition-colors hover:text-white max-[1025px]:mt-2 max-[1025px]:py-2 max-[1025px]:pl-8 max-[1025px]:text-base"
             >
               &amp; many more →
             </a>

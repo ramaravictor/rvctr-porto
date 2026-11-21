@@ -101,13 +101,13 @@ export function Footer() {
           {FOOTER_COLUMNS.map((col) => (
             <div key={col.title}>
               <p className="mb-[1.2vw] text-[1vw] text-white/45 max-[1025px]:mb-4 max-[1025px]:text-sm">{col.title}</p>
-              <ul className="space-y-[0.6vw] text-[1.1vw] max-[1025px]:space-y-2 max-[1025px]:text-base">
+              <ul className="space-y-[0.6vw] text-[1.1vw] max-[1025px]:space-y-0 max-[1025px]:text-base">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <a
                       href={l.href}
                       {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="transition-colors hover:text-brand"
+                      className="inline-block transition-colors hover:text-brand max-[1025px]:py-2.5"
                     >
                       {l.label}
                     </a>

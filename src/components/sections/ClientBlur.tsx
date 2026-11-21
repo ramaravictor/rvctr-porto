@@ -101,7 +101,7 @@ export function ClientBlur() {
                 alt=""
                 className="size-[3vw] shrink-0 object-contain invert max-md:size-[9vw]"
               />
-              <span className="font-sans text-[1.3vw] font-medium leading-tight text-white/90 max-md:text-center max-md:text-[3.2vw]">
+              <span className="font-sans text-[1.3vw] font-medium leading-tight text-white/90 max-[1025px]:text-[13px] max-md:text-center max-md:text-[3.2vw]">
                 {item.name}
               </span>
             </div>
