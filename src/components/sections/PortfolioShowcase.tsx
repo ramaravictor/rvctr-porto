@@ -167,10 +167,10 @@ export function PortfolioShowcase() {
       />
 
       {/* Sticky Showcase Stage */}
-      <div className="sticky top-0 z-20 flex h-screen w-screen flex-col items-center justify-center gap-[5vw] overflow-hidden bg-gradient-to-r from-[#083928] to-[#042722] px-[4vw] max-[1025px]:gap-12 max-[1025px]:px-[5vw] max-md:gap-[8vw]">
+      <div className="sticky top-0 z-20 flex h-screen w-screen flex-col items-center justify-center gap-[min(5vw,5svh)] overflow-hidden bg-gradient-to-r from-[#083928] to-[#042722] px-[4vw] max-[1025px]:gap-[min(3rem,4svh)] max-[1025px]:px-[5vw] max-md:gap-[min(6vw,3svh)]">
         <RevealText
           as="h2"
-          className="text-center font-sans text-[5.5vw] font-normal tracking-tight max-[1025px]:text-[6.5vw] max-md:text-[9vw]"
+          className="text-center font-sans text-[5.5vw] font-normal tracking-tight max-[1025px]:text-[6.5vw] max-md:text-[8vw]"
         >
           Featured Projects &amp; Work
         </RevealText>
@@ -190,7 +190,7 @@ export function PortfolioShowcase() {
                 <Link
                   key={proj.id}
                   href={`/work/${proj.id}`}
-                  className="group relative flex h-[5.4vw] cursor-pointer items-center gap-[1.2vw] text-left max-md:h-auto max-md:min-h-11 max-md:gap-[5vw]"
+                  className="group relative flex h-[min(5.4vw,7svh)] cursor-pointer items-center gap-[1.2vw] text-left max-md:h-auto max-md:min-h-[min(2.75rem,5.2svh)] max-md:gap-[5vw]"
                 >
                   <span
                     ref={(el) => {
@@ -220,7 +220,7 @@ export function PortfolioShowcase() {
               href={SOCIAL_LINKS.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-[1vw] inline-block pl-[calc(0.625rem+1.2vw)] text-[1.1vw] text-white/60 transition-colors hover:text-white max-[1025px]:mt-2 max-[1025px]:py-2 max-[1025px]:pl-8 max-[1025px]:text-base"
+              className="mt-[1vw] inline-block pl-[calc(0.625rem+1.2vw)] text-[1.1vw] text-white/60 transition-colors hover:text-white max-[1025px]:mt-0 max-[1025px]:py-2 max-[1025px]:pl-8 max-[1025px]:text-base"
             >
               &amp; many more →
             </a>
@@ -228,7 +228,7 @@ export function PortfolioShowcase() {
 
           {/* Right Image Stack Deck */}
           {/* 16:9 box, images pinned to the top: full width (logo, nav) always shows */}
-          <div className="relative aspect-[16/9] max-h-[38vw] w-full overflow-hidden rounded-xl shadow-2xl max-[1025px]:max-h-none max-[1025px]:rounded-lg">
+          <div className="relative aspect-[16/9] max-h-[38vw] w-full overflow-hidden rounded-xl shadow-2xl max-[1025px]:max-h-[30svh] max-[1025px]:rounded-lg">
             {PROJECTS.map((proj, idx) => (
               <div
                 key={proj.id}

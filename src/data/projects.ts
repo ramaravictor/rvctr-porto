@@ -183,6 +183,32 @@ export const projectsData: Project[] = [
     status: "in-progress",
     link: "#",
   },
+  {
+    id: "dr-photograph",
+    title: "DR Photography",
+    description:
+      "Landing page for DR Photography, a wedding photographer and videographer in OKU Timur, South Sumatra. One editorial-style page walks couples through what the team covers, past weddings, the wedding day hour by hour, packages and prices, then sends them to WhatsApp to check a date. The owner edits every section from a CMS, without touching code.",
+    image: "/images/work/dr-photograph.jpg",
+    gallery: [
+      { src: "/images/work/dr-photograph/01.jpg", caption: "Hero: Framing of Love" },
+      { src: "/images/work/dr-photograph/02.jpg", caption: "Services: akad, reception, traditional weddings, prewedding" },
+      { src: "/images/work/dr-photograph/03.jpg", caption: "Portfolio of past weddings" },
+      { src: "/images/work/dr-photograph/04.jpg", caption: "The wedding day, from morning make-up to the last guest" },
+      { src: "/images/work/dr-photograph/05.jpg", caption: "Photo, film and poster deliverables" },
+    ],
+    features: [
+      "Editorial one-page layout: services, portfolio, wedding-day timeline, packages, gallery and FAQ",
+      "Packages and prices for akad, reception, traditional weddings, engagement and prewedding",
+      "\"Check a date\" and questions go straight to WhatsApp",
+      "Content (hero, portfolio, gallery, FAQ, contact) edited by the owner through Pages CMS",
+      "Static build with a sitemap, deployed on Cloudflare Workers",
+    ],
+    stack: ["Astro 7", "React 19", "TypeScript", "Tailwind CSS 4", "Pages CMS", "Cloudflare Workers"],
+    tags: ["Astro", "Landing Page", "CMS"],
+    status: "completed",
+    link: "https://dr-photograph.ramaravictor07.workers.dev/",
+    client: "DR Photography",
+  },
 ];
 
 /** Projects with a cover image: used by the hero, the showcase and the footer. */
