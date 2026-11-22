@@ -65,12 +65,16 @@ export function Header() {
       <Link
         href="/#hero"
         aria-label={SITE_CONFIG.name}
-        className="justify-self-start whitespace-nowrap font-sans text-[1.7vw] font-semibold tracking-tight max-[1025px]:text-2xl max-md:text-[17px]"
+        className="block justify-self-start"
       >
-        <span aria-hidden="true">
-          {SITE_CONFIG.shortName}
-          <span className="text-brand">.</span>
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/logo-rsr.png"
+          alt=""
+          width={164}
+          height={240}
+          className="h-[2.6vw] w-auto max-[1025px]:h-9 max-md:h-8"
+        />
       </Link>
 
       {/* Centre: role, city */}
