@@ -87,10 +87,10 @@ export const projectsData: Project[] = [
       "Website for a homestay in Gili Trawangan, Lombok. Guests browse rooms, rentals and island activities, read the homestay's story and reach the owner on WhatsApp. The owner edits every page, room and rental from a Filament admin panel.",
     image: "/images/work/lisa-home-stay.jpg",
     gallery: [
-      { src: "/images/work/lisa-home-stay/01.jpg", caption: "Home" },
-      { src: "/images/work/lisa-home-stay/02.jpg", caption: "Room detail" },
-      { src: "/images/work/lisa-home-stay/03.jpg", caption: "Our story" },
-      { src: "/images/work/lisa-home-stay/04.jpg", caption: "Rentals & activities" },
+      { src: "/images/work/lisa-home-stay/01.jpg", caption: "Room detail: Double Room With Balcony" },
+      { src: "/images/work/lisa-home-stay/02.jpg", caption: "Room photo gallery" },
+      { src: "/images/work/lisa-home-stay/03.jpg", caption: "Rentals & activities: Snorkeling Trip 3 Gili" },
+      { src: "/images/work/lisa-home-stay/04.jpg", caption: "Check availability via WhatsApp" },
       { src: "/images/work/lisa-home-stay/05.jpg", caption: "Admin: rooms" },
     ],
     features: [

@@ -227,7 +227,8 @@ export function PortfolioShowcase() {
           </div>
 
           {/* Right Image Stack Deck */}
-          <div className="relative h-[38vw] w-full overflow-hidden rounded-xl shadow-2xl max-[1025px]:h-[52vw] max-[1025px]:rounded-lg">
+          {/* 16:9 box, images pinned to the top: full width (logo, nav) always shows */}
+          <div className="relative aspect-[16/9] max-h-[38vw] w-full overflow-hidden rounded-xl shadow-2xl max-[1025px]:max-h-none max-[1025px]:rounded-lg">
             {PROJECTS.map((proj, idx) => (
               <div
                 key={proj.id}

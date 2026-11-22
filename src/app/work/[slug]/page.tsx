@@ -77,15 +77,17 @@ export default async function ProjectPage({ params }: Props) {
         </Reveal>
 
         <Reveal delay={0.4} className="mt-10 md:mt-16">
-          <div className="relative aspect-[4/3] overflow-hidden bg-line md:aspect-[16/9]">
+          <div className={`relative overflow-hidden bg-line ${project.image ? "" : "aspect-[4/3] md:aspect-[16/9]"}`}>
             {project.image ? (
+              // Natural aspect ratio: screenshots are shown whole, never cropped.
               <Image
                 src={project.image}
                 alt={`${project.title} preview`}
-                fill
+                width={1600}
+                height={1000}
                 priority
                 sizes="(min-width: 1440px) 1360px, 100vw"
-                className="object-cover"
+                className="block h-auto w-full"
               />
             ) : (
               <div className="flex h-full flex-col justify-between p-6 md:p-10">
@@ -112,13 +114,14 @@ export default async function ProjectPage({ params }: Props) {
                   className={all.length % 2 === 1 && i === all.length - 1 ? "md:col-span-2" : undefined}
                 >
                   <figure>
-                    <div className="relative aspect-[16/10] overflow-hidden bg-line">
+                    <div className="relative overflow-hidden bg-line">
                       <Image
                         src={g.src}
                         alt={g.caption ?? `${project.title} screenshot`}
-                        fill
+                        width={1600}
+                        height={1000}
                         sizes="(min-width: 768px) 50vw, 100vw"
-                        className="object-cover object-top"
+                        className="block h-auto w-full"
                       />
                     </div>
                     {g.caption && (
